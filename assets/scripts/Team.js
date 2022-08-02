@@ -4,7 +4,9 @@ export default class Team {
   constructor(elForm, action) {
     this.action = action; // ['supprimer', 'changer']
     this.elForm = elForm;
-    // this.modifierNomTeam = this.modifierNomTeam.bind(this);
+    this.id = this.elForm.dataset.jsTeam;
+    this.newName = this.elForm.querySelector('[name="nom"]').value;
+
     this.init()
   }
 init(){
@@ -12,10 +14,8 @@ init(){
 }
 
   modifierNomTeam() {
-    const id = this.elForm.dataset.jsTeam;
-    const newName = this.elForm.querySelector('[name="nom"]').value;
-    const encodedNom = encodeURIComponent(newName);
-    const encodedId = encodeURIComponent(id);
+    const encodedNom = encodeURIComponent(this.newName);
+    const encodedId = encodeURIComponent(this.id);
 
     const myInit = {
       method: 'post',
@@ -25,11 +25,11 @@ init(){
       body: 'nom=' + encodedNom + '&id=' + encodedId
     };
 
-    fetch(`requetes/changeTeamName.php?nom=${newName}&id=${id}`, myInit)
+    fetch(`requetes/changeTeamName.php?nom=${this.newName}&id=${this.id}`, myInit)
       .then(function (response) {
         if (response.ok) {
           const newLabel = this.elForm.querySelector('[data-js-label]')
-          newLabel.innerText = `${newName} : `;
+          newLabel.innerText = `${this.newName} : `;
           this.elForm.querySelector('[name="nom"]').value = '';
           return response;
         }
@@ -41,10 +41,8 @@ init(){
   };
 
   supprimerTeam(){
-    const id = this.elForm.dataset.jsTeam;
-    const newName = this.elForm.querySelector('[name="nom"]').value;
-    const encodedNom = encodeURIComponent(newName);
-    const encodedId = encodeURIComponent(id);
+    const encodedNom = encodeURIComponent(this.newName);
+    const encodedId = encodeURIComponent(this.id);
 
     const myInit = {
       method: 'post',
@@ -54,7 +52,7 @@ init(){
       body: 'nom=' + encodedNom + '&id=' + encodedId
     };
 
-    fetch(`requetes/deleteTeam.php?nom=${newName}&id=${id}`, myInit)
+    fetch(`requetes/deleteTeam.php?nom=${this.newName}&id=${this.id}`, myInit)
       .then(function (response) {
         if (response.ok) {
           let allTeams = document.querySelector('[data-js-all-teams]');
@@ -66,7 +64,6 @@ init(){
       .catch(function (error) {
         console.log(`Il y a eu un problème avec l'opération fetch: ${error.message}`);
       });
-
   }
 
 }

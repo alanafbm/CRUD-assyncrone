@@ -36,10 +36,6 @@ export default class AddTeam {
         else throw new Error('La réponse n\'est pas OK');
       })
       .then(function (data) {
-
-        let id = data;
-        console.log(id);
-
       })
       .catch(function (error) {
         console.log(`Il y a eu un problème avec l'opération fetch: ${error.message}`);
